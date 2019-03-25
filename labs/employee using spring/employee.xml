@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	
+	<bean id="employee" class="org.spring.employee.Employee" autowire="byName">
+	<constructor-arg name="id" value="1"></constructor-arg>
+	<constructor-arg name="name" value="DIVYA"></constructor-arg>
+	<constructor-arg name="age" value="21"></constructor-arg>
+	<property name="designation" value="Graduate Hire"></property>
+	<property name="salary" value="360000"></property>
+	<property name="skills" >
+	<list>
+		<value>Core Java</value>
+		<value>J2EE</value>
+		<value>Python</value>
+		<value>Database</value>
+	</list>
+	</property>
+	<property name="fulltime" value="true"></property>
+	<property name="dob" ref="dateofbirth"></property>
+	</bean>
+	<bean id="dateofbirth" class="java.time.LocalDate" factory-method="parse">
+	<constructor-arg value="1997-10-03"></constructor-arg>
+	</bean>
+	<bean id="address" class="org.spring.employee.Address">
+	<property name="hNo" value="1/1290"></property>
+	<property name="street" value="H.B.S colony"></property>
+	<property name="city" value="Yemmiganur"></property>
+	<property name="district" value="Kurnool"></property>
+	<property name="state" value="Andhra Pradesh"></property>
+ 	</bean>
+</beans>
