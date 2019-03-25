@@ -1,0 +1,83 @@
+1.list dept wise emp count: 
+mysql> Select D.department_name,count(*) from Employee E join Department D on D.department_name=E.department group by D.department_name;
++-----------------+----------+
+| department_name | count(*) |
++-----------------+----------+
+| GBS             |        5 |
+| GTS             |        1 |
+| R&D             |        3 |
++-----------------+----------+
+3 rows in set (0.01 sec)
+
+2. list dept wise have salary more than 50k:
+ Select D.department_name,E.name,E.salary from Employee E join Department D on D.department_name=E.department
+    ->     group by D.department_name,E.name,E.salary having E.salary>50000;
++-----------------+----------+--------+
+| department_name | name     | salary |
++-----------------+----------+--------+
+| GBS             | Aarya    | 243233 |
+| GBS             | Aravinda | 343233 |
+| GBS             | Balu     | 843233 |
+| GBS             | Cathy    | 543233 |
+| GBS             | Samba    | 694322 |
+| GTS             | Mila     | 122223 |
+| R&D             | Emma     | 543222 |
+| R&D             | Sahasra  | 943222 |
+| R&D             | Samhita  | 543222 |
++-----------------+----------+--------+
+9 rows in set (0.02 sec)
+3. list country, dept wise avg salary:
+mysql> Select C.name,D.department_name,avg(E.salary) from Employee E join Country C on C.id=E.country_id join Department D on E.department=D.department_name group by C.name,D.department_name;
++---------------+-----------------+---------------+
+| name          | department_name | avg(E.salary) |
++---------------+-----------------+---------------+
+| CHINA         | GTS             |        122223 |
+| EUROPE        | R&D             |        543222 |
+| INDIA         | GBS             |      533450.8 |
+| INDIA         | R&D             |        943222 |
+| UNITED STATES | R&D             |        543222 |
++---------------+-----------------+---------------+
+5 rows in set (0.01 sec)
+
+4.list country,dept have employee count more than 2 ordered by dept name:
+ mysql> Select C.name,D.department_name,Count(*) from Employee E join Country C on C.id=E.country_id
+    -> join Department D on D.department_name= E.department  group by C.name,D.department_name having Count(*)>1;
++-------+-----------------+----------+
+| name  | department_name | Count(*) |
++-------+-----------------+----------+
+| INDIA | GBS             |        5 |
++-------+-----------------+----------+
+1 row in set (0.00 sec)
+
+5. list dept with employee name contains 'sa' and exists more than one country:
+mysql> Select D.department_name,E.name from Employee E join Department D on D.department_name=E.department where E.name Like "%s%a%" or E.name like "%S%a%";
++-----------------+---------+
+| department_name | name    |
++-----------------+---------+
+| GBS             | Samba   |
+| R&D             | Sahasra |
+| R&D             | Samhita |
++-----------------+---------+
+3 rows in set (0.00 sec)
+
+6. List Employee Count Under Each Manager-Name,Count:
+Select E.firstname,count(F.reportsTo) from Employees E join Employees F on E.EmployeeNumber=F.reportsTo group by E.firstname;
+
+7. List Customer Wise Unoque Product Ordered:Customer Name, Product Name:
+Select C.customerName, P.productName from Customers C join Orders O on C.customerNumber=O.customerNumber 
+join OrderDetails OD on O.orderNumber=OD.orderNumber join Products P on P.productCode=OD.productCode;
+
+8. List Product Wise Total Order Amount:
+ Select P.productname,sum(OD.priceEach) from Products P join OrderDetails OD on P.productCode=OD.productCode group by P.productname;
+
+9. List Details OF Manager Who has Highest Sales:
+ Select E.firstName,sum(P.amount) from Employees E join Employees F on E.EmployeeNumber=F.reportsTo 
+join Customers C on C.salesRepEmployeeNumber=F.EmployeeNumber 
+join Payments P on P.customerNumber=C.customerNumber group by E.firstName order by sum(P.amount) desc;
+
+10. List Month Wise NO. OF Orders placed for Each product Line:
+ Select pl.productline,extract(month from o.orderDate) as Month,count(extract(month from o.orderDate)) from productlines pl 
+join products p on p.productline=pl.productline join orderdetails od on od.productcode=p.productcode 
+join orders o on od.orderNumber=o.orderNumber group by pl.productline,Month;
+
+11. List Customers who has not placed any order for any products:
